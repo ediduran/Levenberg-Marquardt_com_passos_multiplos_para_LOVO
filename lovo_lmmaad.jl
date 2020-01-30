@@ -28,8 +28,6 @@ k - número de iterações.
 """
 function lovolmmaad!(modelo, deparcial, x, confiabilidade, μ, M, q, αmax, ε, kmax, problema::String, verbose = true)
 
-    itime = time()
-
     function lambda(fk, u, d)
         return u * norm(fk) ^ d
     end
@@ -38,6 +36,8 @@ function lovolmmaad!(modelo, deparcial, x, confiabilidade, μ, M, q, αmax, ε, 
     D = readdlm("problemas/$(problema)/dados.dat")
     t = copy(D[:,1])
     y = copy(D[:,2])
+
+    itime = time()
     
     r = length(t)
     p = Int((r * confiabilidade) / 100)
@@ -176,6 +176,6 @@ function lovolmmaad!(modelo, deparcial, x, confiabilidade, μ, M, q, αmax, ε, 
 
 end
 
-lovolmmaad!(sen02!, jacsen02!, [5.0, 5.0, 5.0, 5.0, 5.0], 90, 0.5, 10.0^(-6.0), [0.0001, 0.25, 0.75], 5.0, 10.0^(-4.0), 100, "sen02_1000")
+lovolmmaad!(sen01!, jacsen01!, [1.0, 1.0, 1.0, 1.0], 90, 0.5, 10.0^(-6.0), [0.0001, 0.25, 0.75], 5.0, 10.0^(-4.0), 500, "sen01_5000")
 
 GC.gc()

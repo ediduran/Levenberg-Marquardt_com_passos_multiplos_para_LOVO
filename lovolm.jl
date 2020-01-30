@@ -27,14 +27,15 @@ x - parâmetros do modelo após o ajuste.
 norma_grad - norma do gradiente.
 k - número de iterações.
 """
-function lovolm!(modelo, deparcial, x, confiabilidade, damping, ε, kmax, γ, problema::String, verbose = true)
-
-    itime = time()
+function lovolm!(modelo, deparcial, x, confiabilidade, damping, ε, kmax, γ, problema::String, verbose = false)
 
     #Extrair dados
     D = readdlm("problemas/$(problema)/dados.dat")
     t = copy(D[:,1])
     y = copy(D[:,2])
+
+    itime = time()
+    
     r = length(t)
     p = Int((r * confiabilidade) / 100)
     n = length(x)
@@ -107,6 +108,6 @@ function lovolm!(modelo, deparcial, x, confiabilidade, damping, ε, kmax, γ, pr
 
 end
 
-lovolm!(sen02!, jacsen02!, [5.0, 5.0, 5.0, 5.0, 5.0], 90, pd7, 10.0^(-4.0), 100, 10.0^(-2.0), "sen02_1000")
+lovolm!(sen02!, jacsen02!, [5.0, 5.0, 5.0, 5.0, 5.0], 90, pd7, 10.0^(-4.0), 500, 10.0^(-2.0), "sen02_5000")
 
 GC.gc()

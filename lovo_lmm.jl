@@ -26,9 +26,7 @@ x - parâmetros do modelo após o ajuste.
 norma_grad - norma do gradiente.
 k - número de iterações.
 """
-function lovolmm!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, ε, kmax, problema::String, verbose = false)
-
-    itime = time()
+function lovolmm!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, ε, kmax, problema::String, verbose = true)
 
     function lambda(fk, u, d)
         return u * norm(fk) ^ d
@@ -38,6 +36,8 @@ function lovolmm!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, ε, kmax, 
     D = readdlm("problemas/$(problema)/dados.dat")
     t = copy(D[:,1])    # dados relativos a tempo
     y = copy(D[:,2])    # dados relativos aos valores observados
+
+    itime = time()
     
     r = length(t)
     p = Int((r * confiabilidade) / 100)
@@ -132,6 +132,7 @@ function lovolmm!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, ε, kmax, 
             @printf("%s\n", "-----------------------------------------------------------")
             @printf("Iteração: %s\n", k)
             @printf("Parametros calculados: %s\n", x)
+            @printf("Valor de Sp(x): %s\n", dados[3])
             @printf("Norma do gradiente: %s\n", norma_grad)
         end
 
@@ -153,6 +154,6 @@ function lovolmm!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, ε, kmax, 
 
 end
 
-lovolmm!(sen02!, jacsen02!, [5.0, 5.0, 5.0, 5.0, 5.0], 90, 1.0, 0.5, 10.0^(-6.0), [0.0001, 0.25, 0.75], 10.0^(-4.0), 200, "sen02_1000")
+lovolmm!(sen01!, jacsen01!, [1.0, 1.0, 1.0, 1.0], 90, 1.0, 0.5, 10.0^(-6.0), [0.0001, 0.25, 0.75], 10.0^(-4.0), 500, "sen01_5000")
 
 GC.gc()

@@ -30,7 +30,6 @@ k - número de iterações.
 """
 function lovolmma!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, αmax, ε, kmax, problema::String, verbose = true)
 
-    itime = time()
 
     function lambda(fk, u, d)
         return u * norm(fk) ^ d
@@ -40,6 +39,8 @@ function lovolmma!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, αmax, ε
     D = readdlm("problemas/$(problema)/dados.dat")
     t = copy(D[:,1])
     y = copy(D[:,2])
+
+    itime = time()
     
     r = length(t)
     p = Int((r * confiabilidade) / 100)
@@ -143,29 +144,29 @@ function lovolmma!(modelo, deparcial, x, confiabilidade, δ, μ, M, q, αmax, ε
         if verbose == true
             @printf("%s\n", "-----------------------------------------------------------")
             @printf("Iteração: %s\n", k)
-            @printf("Número de avaliações da função: %s\n", l)
-            @printf("Parametros calculados: %s\n", x)
+            #@printf("Número de avaliações da função: %s\n", l)
+            #@printf("Parametros calculados: %s\n", x)
             @printf("Valor de Sp(x): %s\n", dados[3])
-            @printf("Norma do gradiente: %s\n", norma_grad)
+            #@printf("Norma do gradiente: %s\n", norma_grad)
         end
     end
 
     ftime = time()
 
   
-    @printf("%s\n", "-----------------------------------------------------------")
-    @printf("Iteração: %s\n", k)
-    @printf("Número de avaliações da função: %s\n", l)
-    @printf("Parametros calculados: %s\n", x)
-    @printf("Valor de Sp(x): %s\n", dados[3])
-    @printf("Norma do gradiente: %s\n", norma_grad)
-    @printf("tempo: %s\n", ftime - itime)
-    @printf("%s\n", "-----------------------------------------------------------")
+    #@printf("%s\n", "-----------------------------------------------------------")
+    #@printf("Iteração: %s\n", k)
+    #@printf("Número de avaliações da função: %s\n", l)
+    #@printf("Parametros calculados: %s\n", x)
+    #@printf("Valor de Sp(x): %s\n", dados[3])
+    #@printf("Norma do gradiente: %s\n", norma_grad)
+    #@printf("tempo: %s\n", ftime - itime)
+    #@printf("%s\n", "-----------------------------------------------------------")
 
     return x, norma_grad, k
 
 end
 
-lovolmma!(sen02!, jacsen02!, [5.0, 5.0, 5.0, 5.0, 5.0], 90, 1.0, 0.5, 10.0^(-6.0), [0.0001, 0.25, 0.75], 5.0, 10.0^(-4.0), 200, "sen02_1000")
+lovolmma!(sen01!, jacsen01!, [1.0, 1.0, 1.0, 1.0], 90, 1.0, 0.5, 10.0^(-6.0), [0.0001, 0.25, 0.75], 5.0, 10.0^(-4.0), 500, "sen01_5000")
 
 GC.gc()

@@ -25,14 +25,15 @@ x - parâmetros do modelo após o ajuste.
 norma_grad - norma do gradiente.
 k - número de iterações.
 """
-function lovogn!(modelo, deparcial, x, confiabilidade, λ, ε, kmax, γ, problema::String, verbose = true)
-
-    itime = time()
+function lovogn!(modelo, deparcial, x, confiabilidade, λ, ε, kmax, γ, problema::String, verbose = false)
 
     #Extrair dados
     D = readdlm("problemas/$(problema)/dados.dat")
     t = copy(D[:,1])
     y = copy(D[:,2])
+
+    itime = time()
+    
     r = length(t)
     p = Int((r * confiabilidade) / 100)
     n = length(x)
